@@ -9,6 +9,7 @@ This file is a test implimentation of how to interact with IPFS and store QR Cod
 2) Create a QRCode to point to the URL of the JSON document and also store it to IDFS 
 3) Create a final meta data JSON that looks like  {"Event Name" : "Restaurant Opening Event", "Tier Of Ticket": "VIP", "TicketID": 1, "QRURL": "https://ipfs.io/ipfs/QmS9U2bJDB5MZGkxyPMz2BvTBCRVx3dZjdN8CMG7HwDiZd "}.
 
+(We will need to find out how to encrpyt some of this data later on since anyone can see data stored on IPFS)
 
 Make sure to enter your public and private key for the Pinata API line 4 in pinImg.js and pinJSON.js so you can upload to IPFS from your account 
 
