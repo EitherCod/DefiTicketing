@@ -10,9 +10,9 @@ This file is a test implimentation of how to interact with IPFS and store QR Cod
 3) Create a final meta data JSON that looks like  {"Event Name" : "Restaurant Opening Event", "Tier Of Ticket": "VIP", "TicketID": 1, "QRURL": "https://ipfs.io/ipfs/QmS9U2bJDB5MZGkxyPMz2BvTBCRVx3dZjdN8CMG7HwDiZd "}.
 
 
-Make sure to enter your public and private key for the Pinata API line 4 in pinImg.js and pinJSON.js so you uplaod to IPFS from your account 
+Make sure to enter your public and private key for the Pinata API line 4 in pinImg.js and pinJSON.js so you can upload to IPFS from your account 
 
-You can try to modify pinImg.js to uplaod test.png and test2.png to your account
+You can try to modify pinImg.js to upload test.png and test2.png to your account
 
 Testing
 Mainly using Remix IDE to manually test the contract functionality and also tried it on the RinkeBy TestNet
