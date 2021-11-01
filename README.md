@@ -7,7 +7,7 @@ File IPFSUpload.py
 This file is a test implimentation of how to interact with IPFS and store QR Codes and metadata. It calls two JS programs: pinImg pins an image to IPFS and pinJSON pins meta data to to the IPFS. The general structure is:
 1) We create the meta data JSON for the NFT looks like '{"Event Name" : "Restaurant Opening Event", "Tier Of Ticket": "VIP", "TicketID": 1}'
 2) Create a QRCode to point to the URL of the JSON document and also store it to IDFS 
-3) Create a final meta data JSON that looks like  {"Event Name" : "Restaurant Opening Event", "Tier Of Ticket": "VIP", "TicketID": 1, "QRURL": "https://ipfs.io/ipfs/QmS9U2bJDB5MZGkxyPMz2BvTBCRVx3dZjdN8CMG7HwDiZd"} (It stores the URL of the QR Code also) 
+3) Create a final meta data JSON that looks like  {"Event Name" : "Restaurant Opening Event", "Tier Of Ticket": "VIP", "TicketID": 1, "QRURL": "https://ipfs.io/ipfs/QmS9U2bJDB5MZGkxyPMz2BvTBCRVx3dZjdN8CMG7HwDiZd "}.
 
 
 Make sure to enter your public and private key for the Pinata API line 4 in pinImg.js and pinJSON.js so you uplaod to IPFS from your account 
