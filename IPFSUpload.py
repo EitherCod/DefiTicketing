@@ -1,5 +1,4 @@
 import subprocess
-import webbrowser
 import sys
 import pyqrcode
 import os

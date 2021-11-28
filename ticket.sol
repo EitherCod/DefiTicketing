@@ -1,78 +1,41 @@
 // SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
 
-pragma solidity 0.6.2;
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-contract ticket is ERC721{
-    //Address of Who Deployed Smart Contract
-    address owner;
-    //Number of Tickets Distributed
-    uint256 public tokensMinted;
-    //Total Revenue 
-    uint256 totalRevenue;
-    //Tiers 
-    string[] public allTiers; 
-    // How much each ticket at each tier costs 
-    mapping(string => uint256) public tierPricing;
-    // How many tickets are still available in each tier 
-    mapping(string => int) public tierCount;
-    
-    
-    modifier onlyOwner {
-      require(msg.sender == owner);
-      _;
-   }
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol";
+import "hardhat/console.sol";
 
-    constructor() ERC721 ("Ticket", "TIX"){
-        owner = msg.sender;
+//Ticket NFT Code
+contract ticket is ERC721, Ownable{
+    mapping(uint256 => string) private _tokenURI;
+    string private _rootURI;
+
+    constructor() ERC721("NFTIX", "TIX") {
     }
-    
-    //Allows Anyone To Buy a Ticket as They are Available
-    function purchaseTicket(string memory tier) public payable {
-        require(msg.value >= tierPricing[tier], "Insufficient Funds");
-        require( tierCount[tier] > 0, "No More Tickets Available");
-        //Transfer Funds 
-        //address contractAddress = address(this);
-        bool checkTransfer;
-        
-        checkTransfer = payable(msg.sender).send(msg.value - tierPricing[tier]);
-        require(checkTransfer, "Couldn't send excess funds back");
-        
-        checkTransfer = payable(owner).send(tierPricing[tier]);
-        require(checkTransfer, "Couldn't recieve funds");
-        
-        
-        totalRevenue += tierPricing[tier];
-        
-        //Mint Ticket
-        //TODO: tokenURI -> IPFS store JSON metadata
-        _mint(msg.sender, tokensMinted);
-        _setTokenURI(newItemId, tokenURI);
-        tokensMinted += 1;
-        
+
+    function setRootURI(string memory rootURI) external onlyOwner{
+        _rootURI = rootURI;
     }
-    
-    //Allows the Owner To Add A Tier 
-    function addTier(string memory tier, uint256 cost, int count) public onlyOwner{
-        require(tierCount[tier] == 0, "Tier Has Already Been Created");
-        allTiers.push(tier);
-        tierPricing[tier] = cost;
-        tierCount[tier] = count;
+
+    function giveManagerAccess(address managerAddress) public onlyOwner{
+        transferOwnership(managerAddress);
     }
-    
-    //Modify The Cost of Tickets of An Existing Tier 
-    function modifyCostTier(string memory tier, uint256 newPrice) public onlyOwner{
-        require(tierCount[tier] != 0, "No More Tickets Available or Tier Doesn't Exist");
-        tierPricing[tier] = newPrice;
+
+    function _setTokenURI(uint256 id, string memory URI) internal{
+        require(_exists(id), "Ticket Has Not Been Minted");
+        _tokenURI[id] = URI;
     }
-    
-    //Modify The Number of Tickets of An Existing Tier 
-    function modifyCountTier(string memory tier, int newCount) public onlyOwner{
-        require(tierCount[tier] != 0, "No More Tickets Available or Tier Doesn't Exist");
-        tierCount[tier] = newCount;
+
+    function tokenURI(uint256 id) public view virtual override returns(string memory){
+        require(_exists(id), "Ticket Has Not Been Minted");
+        string memory URI = _tokenURI[id];
+        string memory divider = '/';
+        return string(abi.encode(_rootURI, divider, URI));
     }
-    
-    function widthrawRevenue() public onlyOwner{
-        bool checkTransfer = payable(owner).send(totalRevenue);
-        require(checkTransfer, "Unable To Retrieve all Funds");
+
+    function mint(address to, string memory URI, uint256 tokenID) external onlyOwner{
+        require(!_exists(tokenID), "Token ID Has Been Used");
+        _mint(to, tokenID);
+        _setTokenURI(tokenID, URI);
     }
 }
