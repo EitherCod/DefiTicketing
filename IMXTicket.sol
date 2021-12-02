@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./node_modules/@imtbl/imx-contracts/contracts/IMintable.sol";
 import "./node_modules/@imtbl/imx-contracts/contracts/utils/Minting.sol";
 
-abstract contract Mintable is Ownable, IMintable {
+abstract contract IMXTicket is Ownable, IMintable {
     address public imx;
     mapping(uint256 => bytes) public blueprints;
 
